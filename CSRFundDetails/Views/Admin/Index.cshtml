@@ -1,0 +1,29 @@
+﻿<h2>Admin Dashboard</h2>
+
+<div class="admin-options">
+    <div class="option">
+        <h3>Add New User (Organization)</h3>
+        <p>Click the button below to add a new user (organization) to the system.</p>
+        <a href="@Url.Action("AddUser", "Admin")" class="btn btn-primary">Add User</a>
+    </div>
+
+    <div class="option">
+        <h3>View All CSR Funds</h3>
+        <p>View the consolidated data for all CSR funds allocated to different organizations.</p>
+        <a href="@Url.Action("AllCsrFunds", "Admin")" class="btn btn-primary">View CSR Funds</a>
+    </div>
+
+    <div class="option">
+        <h3>View All Deficit CSR Funds</h3>
+        <p>View the consolidated data for all organizations with deficit CSR funds.</p>
+        <a href="@Url.Action("AllDeficitFunds", "Admin")" class="btn btn-primary">View Deficit CSR Funds</a>
+    </div>
+
+    <div class="option">
+        <h3>Logout</h3>
+        <p>Click below to log out from the admin panel.</p>
+        <form asp-action="Logout" method="post">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
+</div>

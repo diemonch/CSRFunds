@@ -1,0 +1,185 @@
+﻿using System;
+using CSRFundDetails.Models;
+using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
+
+namespace CSRFundDetails.Controllers
+{
+	
+
+    public class CsrController : Controller
+    {
+        private readonly IMongoCollection<CsrFund> _csrFundCollection;
+        private readonly IMongoCollection<User> _userCollection;
+        private readonly IMongoCollection<DeficitCsrFund> _deficitCsrFundCollection;
+
+        public CsrController(IMongoDatabase database)
+        {
+            _csrFundCollection = database.GetCollection<CsrFund>("CsrFunds");
+            _userCollection = database.GetCollection<User>("Users");  // Add this line to access user collection
+            _deficitCsrFundCollection = database.GetCollection<DeficitCsrFund>("DeficitCsrFunds");
+        }
+        public IActionResult Index()
+        {
+            //var userId = HttpContext.Session.GetString("UserId");
+            //if (string.IsNullOrEmpty(userId))
+            //{
+            //    Console.WriteLine("UserId is missing in session.");
+            //    return RedirectToAction("Login", "Account");
+            //}
+
+            //// Retrieve the user's OrganizationId from the Users collection
+            //var user = _userCollection.Find(u => u.UserId == userId).FirstOrDefault();
+            //if (user == null)
+            //{
+            //    Console.WriteLine($"No user found with UserId: {userId}");
+            //    return RedirectToAction("Login", "Account");
+            //}
+
+            //var organizationId = user.OrganizationId;
+            //Console.WriteLine($"Found OrganizationId: {organizationId} for UserId: {userId}");
+
+            //// Find the CsrFund by OrganizationId
+            //var fund = _csrFundCollection.Find(f => f.OrganizationId == organizationId).FirstOrDefault();
+            //if (fund == null)
+            //{
+            //    Console.WriteLine($"No CsrFund found for OrganizationId: {organizationId}, creating a new entry.");
+            //    fund = new CsrFund
+            //    {
+            //        OrganizationId = organizationId,
+            //        OrganizationName = "New Organization",
+            //        OpeningBalance = 0,
+            //        CsrFundAlloted = 0,
+            //        ProjectedExpenditure = 0,
+            //        CsrFundBalance = 0
+            //    };
+            //    _csrFundCollection.InsertOne(fund);  // Insert default record for new organizations
+            //}
+            //else
+            //{
+            //    Console.WriteLine($"CsrFund found: OrganizationName: {fund.OrganizationName}, OpeningBalance: {fund.OpeningBalance}");
+            //}
+
+            //return View(fund);
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Find user's organization
+            var user = _userCollection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var organizationId = user.OrganizationId;
+
+            // Find or create "Excess CSR Fund"
+            var excessFund = _csrFundCollection.Find(f => f.OrganizationId == organizationId).FirstOrDefault();
+            if (excessFund == null)
+            {
+                excessFund = new CsrFund
+                {
+                    OrganizationId = organizationId,
+                    OrganizationName = "New Organization",
+                    OpeningBalance = 0,
+                    CsrFundAlloted = 0,
+                    ProjectedExpenditure = 0,
+                    CsrFundBalance = 0
+                };
+                _csrFundCollection.InsertOne(excessFund);
+            }
+
+            // Find or create "Deficit CSR Fund"
+            var deficitFund = _deficitCsrFundCollection.Find(f => f.OrganizationId == organizationId).FirstOrDefault();
+            if (deficitFund == null)
+            {
+                deficitFund = new DeficitCsrFund
+                {
+                    OrganizationId = organizationId,
+                    OrganizationName = "New Organization",
+                    ProjectName = string.Empty,
+                    ProjectReceivedFrom = string.Empty,
+                    ImpactOutcome = string.Empty,
+                    TargetBeneficiaries = string.Empty,
+                    ProjectValue = 0
+                };
+                _deficitCsrFundCollection.InsertOne(deficitFund);
+            }
+
+            var viewModel = new CsrViewModel
+            {
+                ExcessCsrFund = excessFund,
+                DeficitCsrFund = deficitFund
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        //public IActionResult Save(CsrFund fund)
+        //{
+
+        //    Console.WriteLine($"OrganizationId: {fund.OrganizationId}, OrganizationName: {fund.OrganizationName}, OpeningBalance: {fund.OpeningBalance}");
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View("Index", fund);
+        //    }
+
+        //    // Ensure the fund document has its original _id
+        //    var existingFund = _csrFundCollection.Find(f => f.OrganizationId == fund.OrganizationId).FirstOrDefault();
+
+        //    if (existingFund != null)
+        //    {
+        //        // Preserve the original _id
+        //        fund.Id = existingFund.Id;
+
+        //        // Replace the existing document with the updated one
+        //        var result = _csrFundCollection.ReplaceOne(f => f.Id == existingFund.Id, fund);
+        //        if (result.ModifiedCount > 0)
+        //        {
+        //            Console.WriteLine("Update successful");
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Update failed");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Insert new document if not found
+        //        _csrFundCollection.InsertOne(fund);
+        //    }
+
+
+        //    return RedirectToAction("Index");
+        //}
+        public IActionResult Save(CsrViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Index", model);
+            }
+
+            // Update "Excess CSR Fund"
+            _csrFundCollection.ReplaceOne(f => f.OrganizationId == model.ExcessCsrFund.OrganizationId, model.ExcessCsrFund);
+
+            // Update "Deficit CSR Fund"
+            _deficitCsrFundCollection.ReplaceOne(f => f.OrganizationId == model.DeficitCsrFund.OrganizationId, model.DeficitCsrFund);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Account");
+        }
+    }
+}
+
+

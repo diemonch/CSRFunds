@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Admin Dashboard</h2>
+
+<ul>
+    <li><a href="@Url.Action("AddUser", "Admin")">Add New User (Organization)</a></li>
+    <li><a href="@Url.Action("AllCsrFunds", "Admin")">View All CSR Funds</a></li>
+    <li><a href="@Url.Action("AllDeficitCsrFunds", "Admin")">View All Deficit CSR Funds</a></li>
+    <li><a href="@Url.Action("Logout", "Admin")">Logout</a></li>
+</ul>

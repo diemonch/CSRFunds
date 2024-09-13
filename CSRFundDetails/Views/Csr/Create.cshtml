@@ -1,0 +1,34 @@
+﻿@model CSRFundDetails.Models.CsrFund
+
+<h2>Create CSR Fund Entry</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="Organization">Organization</label>
+        <input type="text" class="form-control" name="Organization" />
+    </div>
+    <div class="form-group">
+        <label for="OpeningBalance">Opening Balance (Rs. in lakhs)</label>
+        <input type="number" class="form-control" name="OpeningBalance" />
+    </div>
+    <div class="form-group">
+        <label for="CsrFundAllotted">CSR Fund Allotted (Rs. in lakhs)</label>
+        <input type="number" class="form-control" name="CsrFundAllotted" />
+    </div>
+    <div class="form-group">
+        <label for="ProjectedExpenditure">Projected Expenditure (Rs. in lakhs)</label>
+        <input type="number" class="form-control" name="ProjectedExpenditure" />
+    </div>
+    <div class="form-group">
+        <label for="CsrFundBalance">CSR Fund Balance</label>
+        <input type="number" class="form-control" name="CsrFundBalance" />
+    </div>
+    <div class="form-group">
+        <label for="FundStatus">Fund Status</label>
+        <select name="FundStatus" class="form-control">
+            <option value="Excess">Excess</option>
+            <option value="Deficit">Deficit</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

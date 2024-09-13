@@ -1,0 +1,120 @@
+﻿@model CSRFundDetails.Models.CombinedCsrFundsViewModel
+
+<h2>CSR Fund Details</h2>
+
+<!-- Display Validation Summary -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        Please correct the following errors:
+        @Html.ValidationSummary(true)
+    </div>
+}
+
+<div class="container">
+    <form asp-action="Save" method="post">
+        <div class="row">
+            <!-- Excess CSR Fund Panel -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3>Organization with Excess CSR Fund</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="OrganizationId">Organization ID:</label>
+                            <input type="text" class="form-control" id="OrganizationId" name="CsrFund.OrganizationId" value="@Model.CsrFund.OrganizationId" readonly />
+                            @Html.ValidationMessageFor(model => model.CsrFund.OrganizationId)
+                        </div>
+                        <div class="form-group">
+                            <label for="OrganizationName">Organization Name:</label>
+                            <input type="text" class="form-control" id="OrganizationName" name="CsrFund.OrganizationName" value="@Model.CsrFund.OrganizationName" />
+                            @Html.ValidationMessageFor(model => model.CsrFund.OrganizationName)
+                        </div>
+                        <div class="form-group">
+                            <label for="OpeningBalance">Opening Balance (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="OpeningBalance" name="CsrFund.OpeningBalance" value="@Model.CsrFund.OpeningBalance" />
+                            @Html.ValidationMessageFor(model => model.CsrFund.OpeningBalance)
+                        </div>
+                        <div class="form-group">
+                            <label for="CsrFundAlloted">CSR Fund Allotted (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="CsrFundAlloted" name="CsrFund.CsrFundAlloted" value="@Model.CsrFund.CsrFundAlloted" />
+                            @Html.ValidationMessageFor(model => model.CsrFund.CsrFundAlloted)
+                        </div>
+                        <div class="form-group">
+                            <label for="ProjectedExpenditure">Projected Expenditure (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="ProjectedExpenditure" name="CsrFund.ProjectedExpenditure" value="@Model.CsrFund.ProjectedExpenditure" />
+                            @Html.ValidationMessageFor(model => model.CsrFund.ProjectedExpenditure)
+                        </div>
+                        <div class="form-group">
+                            <label for="CsrFundBalance">CSR Fund Balance (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="CsrFundBalance" name="CsrFund.CsrFundBalance" value="@Model.CsrFund.CsrFundBalance" />
+                            @Html.ValidationMessageFor(model => model.CsrFund.CsrFundBalance)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deficit CSR Fund Panel -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3>Organization with Deficit CSR Fund</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="DeficitOrganizationId">Organization ID:</label>
+                            <input type="text" class="form-control" id="DeficitOrganizationId" name="DeficitCsrFund.OrganizationId" value="@Model.DeficitCsrFund.OrganizationId" readonly />
+                            @Html.ValidationMessageFor(model => model.DeficitCsrFund.OrganizationId)
+                        </div>
+                        <div class="form-group">
+                            <label for="DeficitOrganizationName">Organization Name:</label>
+                            <input type="text" class="form-control" id="DeficitOrganizationName" name="DeficitCsrFund.OrganizationName" value="@Model.DeficitCsrFund.OrganizationName" />
+                            @Html.ValidationMessageFor(model => model.DeficitCsrFund.OrganizationName)
+                        </div>
+                        <div class="form-group">
+                            <label for="ProjectName">Project Name:</label>
+                            <input type="text" class="form-control" id="ProjectName" name="DeficitCsrFund.ProjectName" value="@Model.DeficitCsrFund.ProjectName" />
+                            @Html.ValidationMessageFor(model => model.DeficitCsrFund.ProjectName)
+                        </div>
+                        <div class="form-group">
+                            <label for="ProjectReceivedFrom">Project Received From:</label>
+                            <input type="text" class="form-control" id="ProjectReceivedFrom" name="DeficitCsrFund.ProjectReceivedFrom" value="@Model.DeficitCsrFund.ProjectReceivedFrom" />
+                            @Html.ValidationMessageFor(model => model.DeficitCsrFund.ProjectReceivedFrom)
+                        </div>
+                        <div class="form-group">
+                            <label for="ImpactOutcome">Impact Outcome:</label>
+                            <input type="text" class="form-control" id="ImpactOutcome" name="DeficitCsrFund.ImpactOutcome" value="@Model.DeficitCsrFund.ImpactOutcome" />
+                            @Html.ValidationMessageFor(model => model.DeficitCsrFund.ImpactOutcome)
+                        </div>
+                        <div class="form-group">
+                            <label for="TargetBeneficiaries">Target Beneficiaries:</label>
+                            <input type="text" class="form-control" id="TargetBeneficiaries" name="DeficitCsrFund.TargetBeneficiaries" value="@Model.DeficitCsrFund.TargetBeneficiaries" />
+                            @Html.ValidationMessageFor(model => model.DeficitCsrFund.TargetBeneficiaries)
+                        </div>
+                        <div class="form-group">
+                            <label for="ProjectValue">Project Value (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="ProjectValue" name="DeficitCsrFund.ProjectValue" value="@Model.DeficitCsrFund.ProjectValue" />
+                            @Html.ValidationMessageFor(model => model.DeficitCsrFund.ProjectValue)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save and Logout Buttons -->
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-between">
+                <button type="submit" class="btn btn-success btn-lg" style="width: 150px;">Save</button>
+                <form asp-action="Logout" method="post">
+                    <button type="submit" class="btn btn-danger btn-lg" style="width: 150px;">Logout</button>
+                </form>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}

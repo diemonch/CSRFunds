@@ -1,0 +1,126 @@
+﻿<h2>CSR Fund Details</h2>
+
+<!-- Display Validation Summary -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        Please correct the following errors:
+        @Html.ValidationSummary(true)
+    </div>
+}
+
+<div class="container">
+    <form id="saveForm" asp-action="Save" method="post">
+        <div class="row">
+            <!-- Excess CSR Fund Panel -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Organization with Excess CSR Fund</h3>
+                        <button type="button" class="btn btn-warning" onclick="enableExcessEdit()">Edit</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="OrganizationId">Organization ID:</label>
+                            <input type="text" class="form-control" id="OrganizationId" name="CsrFund.OrganizationId" value="@Model.CsrFund.OrganizationId" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="OrganizationName">Organization Name:</label>
+                            <input type="text" class="form-control" id="OrganizationName" name="CsrFund.OrganizationName" value="@Model.CsrFund.OrganizationName" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="OpeningBalance">Opening Balance (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="OpeningBalance" name="CsrFund.OpeningBalance" value="@Model.CsrFund.OpeningBalance" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="CsrFundAlloted">CSR Fund Allotted (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="CsrFundAlloted" name="CsrFund.CsrFundAlloted" value="@Model.CsrFund.CsrFundAlloted" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="ProjectedExpenditure">Projected Expenditure (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="ProjectedExpenditure" name="CsrFund.ProjectedExpenditure" value="@Model.CsrFund.ProjectedExpenditure" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="CsrFundBalance">CSR Fund Balance (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="CsrFundBalance" name="CsrFund.CsrFundBalance" value="@Model.CsrFund.CsrFundBalance" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deficit CSR Fund Panel -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Organization with Deficit CSR Fund</h3>
+                        <button type="button" class="btn btn-warning" onclick="enableDeficitEdit()">Edit</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="DeficitOrganizationId">Organization ID:</label>
+                            <input type="text" class="form-control" id="DeficitOrganizationId" name="DeficitCsrFund.OrganizationId" value="@Model.DeficitCsrFund.OrganizationId" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="DeficitOrganizationName">Organization Name:</label>
+                            <input type="text" class="form-control" id="DeficitOrganizationName" name="DeficitCsrFund.OrganizationName" value="@Model.DeficitCsrFund.OrganizationName" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="ProjectName">Project Name:</label>
+                            <input type="text" class="form-control" id="ProjectName" name="DeficitCsrFund.ProjectName" value="@Model.DeficitCsrFund.ProjectName" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="ProjectReceivedFrom">Project Received From:</label>
+                            <input type="text" class="form-control" id="ProjectReceivedFrom" name="DeficitCsrFund.ProjectReceivedFrom" value="@Model.DeficitCsrFund.ProjectReceivedFrom" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="ImpactOutcome">Impact Outcome:</label>
+                            <input type="text" class="form-control" id="ImpactOutcome" name="DeficitCsrFund.ImpactOutcome" value="@Model.DeficitCsrFund.ImpactOutcome" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="TargetBeneficiaries">Target Beneficiaries:</label>
+                            <input type="text" class="form-control" id="TargetBeneficiaries" name="DeficitCsrFund.TargetBeneficiaries" value="@Model.DeficitCsrFund.TargetBeneficiaries" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="ProjectValue">Project Value (Rs. in lakhs):</label>
+                            <input type="number" class="form-control" id="ProjectValue" name="DeficitCsrFund.ProjectValue" value="@Model.DeficitCsrFund.ProjectValue" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save and Logout Buttons (Right aligned and on the same row) -->
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-success btn-lg me-2" style="width: 150px;" id="saveButton" disabled>Save</button>
+            </div>
+        </div>
+    </form>
+
+    <form asp-action="Logout" method="post" style="display: inline;">
+        <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-danger btn-lg" style="width: 150px;">Logout</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>function enableExcessEdit() {
+            document.getElementById('OrganizationName').readOnly = false;
+            document.getElementById('OpeningBalance').readOnly = false;
+            document.getElementById('CsrFundAlloted').readOnly = false;
+            document.getElementById('ProjectedExpenditure').readOnly = false;
+            document.getElementById('CsrFundBalance').readOnly = false;
+            document.getElementById('saveButton').disabled = false;
+        }
+
+        function enableDeficitEdit() {
+            document.getElementById('DeficitOrganizationName').readOnly = false;
+            document.getElementById('ProjectName').readOnly = false;
+            document.getElementById('ProjectReceivedFrom').readOnly = false;
+            document.getElementById('ImpactOutcome').readOnly = false;
+            document.getElementById('TargetBeneficiaries').readOnly = false;
+            document.getElementById('ProjectValue').readOnly = false;
+            document.getElementById('saveButton').disabled = false;
+        }</script>
+}

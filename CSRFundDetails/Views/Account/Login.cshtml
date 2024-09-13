@@ -1,0 +1,66 @@
+﻿@model CSRFundDetails.Models.LoginViewModel
+
+<h2 style="text-align: center; font-family: Arial, sans-serif;">Login</h2>
+
+<!-- Script to disable back button after login -->
+<script type="text/javascript">(function (global) {
+        if (typeof (global) === "undefined") {
+            throw new Error("window is undefined");
+        }
+
+        var _hash = "!";
+        var noBackPlease = function () {
+            global.location.href += "#";
+            global.setTimeout(function () {
+                global.location.href += "!";
+            }, 50);
+        };
+
+        global.onhashchange = function () {
+            if (global.location.hash !== _hash) {
+                global.location.hash = _hash;
+            }
+        };
+
+        global.onload = function () {
+            noBackPlease();
+            global.history.pushState(null, "", global.location.href);
+            global.onpopstate = function () {
+                global.history.pushState(null, "", global.location.href);
+            };
+        };
+    })(window);</script>
+
+<!-- Login form -->
+<div class="login-container">
+    @* Display validation summary for any errors *@
+    @if (ViewData.ModelState.ContainsKey("InvalidCredentials"))
+    {
+        <div class="alert alert-danger">
+            @ViewData.ModelState["InvalidCredentials"].Errors[0].ErrorMessage
+        </div>
+    }
+
+    <form asp-action="Login" method="post" class="login-form">
+        <div class="form-group">
+            <label>User ID:</label>
+            <input type="text" asp-for="UserId" class="form-control" placeholder="Enter your User ID" />
+            @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" asp-for="Password" class="form-control" placeholder="Enter your Password" />
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}

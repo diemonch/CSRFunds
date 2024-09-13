@@ -1,0 +1,31 @@
+﻿@model IEnumerable<CSRFundDetails.Models.DeficitCsrFund>
+
+<h2>All Deficit CSR Funds</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Organization ID</th>
+            <th>Organization Name</th>
+            <th>Project Name</th>
+            <th>Project Received From</th>
+            <th>Impact Outcome</th>
+            <th>Target Beneficiaries</th>
+            <th>Project Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var fund in Model)
+        {
+            <tr>
+                <td>@fund.OrganizationId</td>
+                <td>@fund.OrganizationName</td>
+                <td>@fund.ProjectName</td>
+                <td>@fund.ProjectReceivedFrom</td>
+                <td>@fund.ImpactOutcome</td>
+                <td>@fund.TargetBeneficiaries</td>
+                <td>@fund.ProjectValue</td>
+            </tr>
+        }
+    </tbody>
+</table>
